@@ -23,12 +23,35 @@ function startQuiz() {
 }
 
 
+
 // $('form input').on('change', function (){
 //   console.log($('input:radio:checked').next().next('label:first').html());
 // });
 
 
 // button.submit
+
+// $('#quiz-question .test').submit(function(e) {
+//   e.preventDefault();
+//   //console.log($(this).text());
+//   console.log("gi")
+// });
+
+
+
+$('.test').on('click', function() {
+  var selected = $(this).next().text();
+  console.log(selected);
+  $('.test').removeClass('selected');
+  $(this).addClass('selected');
+
+  
+});
+ 
+ 
+
+
+
 
 
 // restart quiz
@@ -42,8 +65,10 @@ function startQuiz() {
 
 
 function main() {
-  questionContainer.hide();
+  //questionContainer.hide();
+
   startQuiz();
+  //submitAnswer();
 }
 
 $(document).ready(main());

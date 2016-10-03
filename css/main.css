@@ -34,3 +34,7 @@ main {
   background-color: red;
   text-decoration: line-through;
 }
+
+.selected {
+  background-color: lightgray;
+}
