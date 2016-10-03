@@ -31,6 +31,7 @@ var state = {
       answer: 'Venus and Uranus'
     }
   ],
+  mutableQuiz: [],
   currentIdx: 0,
   numberCorrect: 0   
 }

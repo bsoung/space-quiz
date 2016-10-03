@@ -1,13 +1,15 @@
 var questionContainer = $('.question-container');
 var questionCount = 1;
 var quizLength = state.quiz.length;
-var restartQuestions = state.quiz.slice();
+
+
 
 function renderHtml (state, element, count) {
   var questionHtml;
   var statHtml;
 
   if (state.quiz.length !== 0) {
+    
     $('.results').empty();
     questionHtml = '<h2 class="question">';
     questionHtml += state.quiz[state.currentIdx].question + '<span>(';
@@ -27,8 +29,9 @@ function renderHtml (state, element, count) {
       questionHtml += '<span class="choice">' + choice.split('.')[1].trim();
       questionHtml += '</span></div>';
     });
+
   } else {
-    console.log('hi');
+    console.log(state.quiz);
     statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect 
     statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
     $('.results').html(statHtml);
@@ -53,13 +56,18 @@ function checkAnswer (selected, selectedBtn) {
   if (selected === state.quiz[state.currentIdx].answer) {
     state.numberCorrect++;
     selectedBtn.addClass('correct');
+    
   } else {
     selectedBtn.addClass('incorrect');
     $('.correctAnswer').css('background-color', 'green');
   }
 
+  //state.mutableQuiz.push(state.quiz[state.currentIdx]);
+  
   $('.choices button').prop('disabled', true);
-  state.quiz.pop();
+  state.mutableQuiz.push(state.quiz.pop());
+  console.log(state.mutableQuiz.length);
+  
   questionCount += 1;
   $('.question-container').append('<button class="next-question">Next</button>');
 }
@@ -75,7 +83,9 @@ function nextQuestion() {
 function restartQuiz () {
   questionCount = 1;
   state.currentIdx = 0;
-  state.quiz = restartQuestions;
+  state.numberCorrect = 0;
+  state.quiz = state.mutableQuiz;
+  state.mutableQuiz = [];
   renderHtml(state, questionContainer, questionCount);
 }
 
