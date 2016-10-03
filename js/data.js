@@ -31,7 +31,6 @@ var state = {
       answer: 'Venus and Uranus'
     }
   ],
-  correctFlag: false,
   currentIdx: 0,
   numberCorrect: 0   
 }
