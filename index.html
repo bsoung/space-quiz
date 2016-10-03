@@ -1,16 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Quiz App</title>
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/main.css">
+    <meta charset="UTF-8">
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
+  <main>
+    <div class="intro">
+        <h1>Welcome to the quiz app!</h1>
+        <p>This is a space quiz. Let's see how knowledgable you are about the great beyond!</p>
+    </div>
+    <div class="question-container">
+        <h2 class="question">How big is Earth?<span>(1 of 7)</span></h2>
+        <form>
+            <div class="choices">
+                <input type="radio" name="choice" value="1" id="choice-a">
+                <label for="choice-a">A. I don't know</label>
+            </div>
+            <div class="choices">
+                <input type="radio" name="choice" value="2" id="choice-b">
+                <label for="choice-b">B. Really big!</label>
+            </div>
+            <div class="choices">
+                <input type="radio" name="choice" value="3" id="choice-c">
+                <label for="choice-c">C. What is Earth?</label>
+            </div>
+            <div class="choices"`>
+                <input type="radio" name="choice" value="4" id="choice-d">
+                <label for="choice-d">D. Burgers</label>
+            </div>
+        </form>
+    </div>
+    <button type="button" class="start">Begin!</button>
+  </main>
 
-
-  <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-  <script type="text/javascript" src="js/data.js"></script>
-  <script type="text/javascript" src="js/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
 </body>
-</html>  
+
+</html>
