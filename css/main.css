@@ -2,12 +2,6 @@ main {
   padding: 30px;
 }
 
-input {
- 
-
-}
-
-
 .choices {
   display: block;
   padding-top: 10px;
@@ -15,4 +9,13 @@ input {
 
 .start {
   margin-top: 20px;
+}
+
+.correct {
+  color: green;
+}
+
+.incorrect {
+  color: red;
+  text-decoration: line-through;
 }

@@ -2,35 +2,36 @@ var state = {
   quiz: [
     {
       question: 'Which planet is NOT a gas giant?',
-      choice: ['Saturn', 'Neptune', 'Venus', 'Jupiter'],
+      choices: ['A. Saturn', 'B. Neptune', 'C. Venus', 'D. Jupiter'],
       answer: 'Venus'
     },
     {
       question: 'What natural satalite orbits Earth?',
-      choice: ['Asteroid', 'The moon', 'Another planet', 'The international space station'],
+      choices: ['A. Asteroid', 'B. The moon', 'C. Another planet', 'D. The international space station'],
       answer: 'The moon'
     },
     {
       question: 'The planet closest to the sun is?',
-      choice: ['Mercury', 'Venus', 'Mars', 'Earth'],
+      choices: ['A. Mercury', 'B. Venus', 'C. Mars', 'D. Earth'],
       answer: 'Mercury'
     },
     {
       question: 'What is the name of the galaxy we live in?',
-      choice: ['Andromeda', 'Milky Way', 'Bode\'s', 'Mayall'],
+      choices: ['A. Andromeda', 'B. Milky Way', 'C. Bode\'s', 'D. Mayall'],
       answer: 'Milky Way'
     },
     {
       question: 'What planet is known for having a ring around it?',
-      choice: ['Mars', 'Jupiter', 'Venus', 'Saturn'],
+      choices: ['A. Mars', 'B. Jupiter', 'C. Venus', 'D. Saturn'],
       answer: 'Saturn'
     },
     {
       question: 'Which two planets have a retrograde(backwards) rotation?',
-      choice: ['Earth and Mars', 'Mars and Venus', 'Jupiter and Saturn', 'Venus and Uranus'],
+      choices: ['A. Earth and Mars', 'B. Mars and Venus', 'C. Jupiter and Saturn', 'D. Venus and Uranus'],
       answer: 'Venus and Uranus'
     }
   ],
   correctFlag: false,
+  currentIdx: 0,
   numberCorrect: 0   
 }
