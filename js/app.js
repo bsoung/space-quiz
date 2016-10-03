@@ -1,16 +1,27 @@
 var questionContainer = $('.question-container');
 var questionCount = 1;
 
-function renderHtml (state, idx, element) {
-  var questionHtml = '<div class="question-container"><h2 class="question">';
-  questionHtml += state.quiz[idx].question + '<span>(';
+function renderHtml (state, element) {
+  var questionHtml = '<h2 class="question">';
+  questionHtml += state.quiz[state.currentIdx].question + '<span>(';
   questionHtml += questionCount + ' of ' + state.quiz.length;
-  questionHtml += ')</span></h2><form>';
+  questionHtml += ')</span></h2>';
 
-  state.quiz[idx].choices.forEach(function (choice) {
-    questionHtml += '<div class="choices"><input type="radio" name="choice"<label>' 
-    questionHtml += choice + '</label>';
+  state.quiz[state.currentIdx].choices.forEach(function (choice) {
+    questionHtml += '<div class="choices">'
+
+    if (choice.split('.')[1].trim() === state.quiz[state.currentIdx].answer) {
+      questionHtml += '<button class="selectChoice correctAnswer">';
+    } else {
+      questionHtml += '<button class="selectChoice">';
+    }
+
+    questionHtml += choice[0] + '</button>';
+    questionHtml += '<span class="choice">' + choice.split('.')[1].trim();
+    questionHtml += '</span></div>';
   });
+
+  element.html(questionHtml);
 }
 
 // Start Quiz 
@@ -19,36 +30,31 @@ function startQuiz() {
     $('.intro, .start').hide();    
     questionContainer.show();
     state.currentIdx = state.quiz.length-1;
+
+    renderHtml(state, questionContainer);
   })  
 }
 
 
-
-// $('form input').on('change', function (){
-//   console.log($('input:radio:checked').next().next('label:first').html());
-// });
-
-
-// button.submit
-
-// $('#quiz-question .test').submit(function(e) {
-//   e.preventDefault();
-//   //console.log($(this).text());
-//   console.log("gi")
-// });
-
-
-
-$('.test').on('click', function() {
+$(document).delegate('.selectChoice', 'click', function() {
   var selected = $(this).next().text();
-  console.log(selected);
-  $('.test').removeClass('selected');
-  $(this).addClass('selected');
 
-  
+  if (selected === state.quiz[state.currentIdx].answer) {
+    $(this).addClass('correct');
+  } else {
+    $(this).addClass('incorrect');
+    $('.correctAnswer').css('background-color', 'green');
+  }
+
+  $('.choices button').prop('disabled', true);
+
+  $('.next-question-container').html('<button class="nextQuestion">Next</button>');
 });
  
- 
+
+ // submit answer
+
+
 
 
 
@@ -58,17 +64,15 @@ $('.test').on('click', function() {
   // button.click
 
 
-// submit answer
   //button.click
 
 
 
-
 function main() {
-  //questionContainer.hide();
+  questionContainer.hide();
 
   startQuiz();
-  //submitAnswer();
+  // submitAnswer();
 }
 
 $(document).ready(main());
