@@ -4,24 +4,23 @@ var quizLength = state.quiz.length;
 var letterChoice = ['A', 'B', 'C', 'D'];
 
 
-function renderHtml(state, element, count) {
+function renderHtml(newQuestion, element, count) {
     var questionHtml;
-    var statHtml;
 
     if (state.quiz.length !== 0) {
 
         $('.results').empty();
         questionHtml = '<h2 class="question">';
-        questionHtml += state.quiz[state.currentIdx].question + '</h2>';
+        questionHtml += newQuestion.question + '</h2>';
         questionHtml += '<h4><span>(';
         questionHtml += count + ' of ' + quizLength;
         questionHtml += ')</span></h4>';
         questionHtml += '<div class="answer-container">';
 
-        state.quiz[state.currentIdx].choices.forEach(function(choice, idx) {
+        newQuestion.choices.forEach(function(choice, idx) {
             questionHtml += '<div class="choices">'
 
-            if (choice === state.quiz[state.currentIdx].answer) {
+            if (choice === newQuestion.answer) {
                 questionHtml += '<button class="selectChoice correctAnswer">';
             } else {
                 questionHtml += '<button class="selectChoice">';
@@ -32,13 +31,8 @@ function renderHtml(state, element, count) {
             questionHtml += '</span></div>';
         });
         questionHtml += '</div>';
-
-    } else {
-        statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
-        statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
-        $('.results').html(statHtml);
-        $('.question-container').html('');
     }
+
     //element.hide();
     element.html(questionHtml);
     SlideUpAnimate(1000, function() {
@@ -46,7 +40,14 @@ function renderHtml(state, element, count) {
       //   alert("TOO SLOW");
       // });
     });
+}
 
+function renderResultsHtml () {
+  var statHtml;
+  statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
+  statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
+  $('.results').html(statHtml);
+  $('.question-container').html('');
 }
 
 
@@ -76,18 +77,6 @@ function shuffleChoices() {
     });
 }
 
-
-// Start Quiz 
-function startQuiz() {
-    $('.intro, .start').hide();
-
-    shuffle(state.quiz);
-    shuffleChoices();
-    state.currentIdx = state.quiz.length - 1;
-    renderHtml(state, questionContainer, questionCount);
-}
-
-
 // Check Answer
 function checkAnswer(selected, selectedBtn) {
 
@@ -103,7 +92,7 @@ function checkAnswer(selected, selectedBtn) {
     }
 
     $('.choices button').prop('disabled', true);
-    state.mutableQuiz.push(state.quiz.pop());
+    // state.mutableQuiz.push(state.quiz.pop());
 
     questionCount += 1;
     $('.question-container').append('<button class="next-question">Next</button>');
@@ -113,8 +102,35 @@ function checkAnswer(selected, selectedBtn) {
 
 // Next Question
 function nextQuestion() {
-    state.currentIdx = state.quiz.length - 1;
-    renderHtml(state, questionContainer, questionCount);
+    getQuestion();
+    renderHtml(state.quiz[state.currentIdx], questionContainer, questionCount);
+}
+
+// Get Question
+function getQuestion () {
+  state.currentIdx = Math.floor(Math.random() * state.quiz.length);
+
+  if (state.quiz[state.currentIdx].usedFlag === false) {
+    var ranQuestion = state.quiz[state.currentIdx];
+    state.quiz[state.currentIdx].usedFlag = true;
+    state.numberUsed++;
+    return state.quiz[state.currentIdx];
+  } else {
+    console.log('END!!!!!!!!!!!!!!!');
+    renderResultsHtml();
+  }
+}
+
+
+// Start Quiz 
+function startQuiz() {
+    $('.intro, .start').hide();
+
+    shuffle(state.quiz);
+    shuffleChoices();
+
+    var newQuestion = getQuestion();
+    renderHtml(newQuestion, questionContainer, questionCount);
 }
 
 
@@ -123,35 +139,12 @@ function restartQuiz() {
     questionCount = 1;
     state.currentIdx = 0;
     state.numberCorrect = 0;
-    state.quiz = state.mutableQuiz;
-    state.mutableQuiz = [];
+   
     shuffle(state.quiz);
     shuffleChoices();
 
     renderHtml(state, questionContainer, questionCount);
 }
-
-var SlideUpAnimate = function(duration, callback) {
-    var $element = $(".slide-up");
-    var startPosition = $(window).scrollTop() + $(window).height() + $element.height();
-    var finishPosition = $element.position().top;
-    $element.css("top", startPosition + "px").show().animate({
-        top: finishPosition + "px"
-    }, duration, callback);
-};
-
-var SlideDownAnimate = function(duration, callback) {
-    console.log("check")
-    var $element = $(".slide-down");
-    var finishPosition = $(window).scrollTop() + $(window).height() + $element.height();
-    var startPosition = $element.position().top;
-    $element.css("top", startPosition + "px").animate({
-        top: finishPosition + "px"
-    }, duration, function() {
-        $element.hide();
-        callback();
-    });
-};
 
 
 $(document).ready(function() {
@@ -170,6 +163,4 @@ $(document).ready(function() {
     $(document).delegate('.restart', 'click', function() {
         restartQuiz();
     });
-
-
 });

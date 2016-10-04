@@ -78,6 +78,14 @@ video {
     font-weight: bold;
 }
 
+/*.selectChoice:nth-child(1) {
+  float: left;
+}
+
+.selectChoice:nth-child(3) {
+ float: left;
+}*/
+
 .choice {
     padding-top: 17px;
     position: absolute;
