@@ -1,5 +1,28 @@
 main {
   padding: 30px;
+  text-align: center;
+
+}
+
+body {
+  background-color: #2E3192;
+}
+
+p, h1, h2, h4, span {
+  color: #C42562;
+}
+
+
+.question-container {
+  border: 1px solid black;
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
+  margin-left: 430px;
+
+}
+
+.slide-up {
+  text-align: center;
 }
 
 .choices {
@@ -13,6 +36,7 @@ main {
 
 
 .selectChoice {
+  overflow: hidden;
   display: inline-block;
   margin-top: 5px;
   margin-right: 10px;
@@ -20,21 +44,22 @@ main {
   background-color: #fff;
   border-radius: 4px;
   font-weight: bold;
+
 }
 
-.choice label {
-  display: inline;
+.choice {
+  padding-top: 17px;
+  position: absolute;
 }
 
 .correct {
-  background-color: green;
+  border: 3px solid green;
 }
 
 .incorrect {
-  background-color: red;
-  text-decoration: line-through;
+  border: 3px solid red;
 }
 
-.selected {
-  background-color: lightgray;
+.next-question {
+  margin-top: 30px;
 }
