@@ -1,7 +1,7 @@
 var questionContainer = $('.question-container');
 var questionCount = 1;
 var quizLength = state.quiz.length;
-
+var letterChoice = ['A', 'B', 'C', 'D'];
 
 
 function renderHtml (state, element, count) {
@@ -16,17 +16,17 @@ function renderHtml (state, element, count) {
     questionHtml += count + ' of ' + quizLength;
     questionHtml += ')</span></h2>';
 
-    state.quiz[state.currentIdx].choices.forEach(function (choice) {
+    state.quiz[state.currentIdx].choices.forEach(function (choice ,idx) {
       questionHtml += '<div class="choices">'
 
-      if (choice.split('.')[1].trim() === state.quiz[state.currentIdx].answer) {
+      if (choice === state.quiz[state.currentIdx].answer) {
         questionHtml += '<button class="selectChoice correctAnswer">';
       } else {
         questionHtml += '<button class="selectChoice">';
       }
 
-      questionHtml += choice[0] + '</button>';
-      questionHtml += '<span class="choice">' + choice.split('.')[1].trim();
+      questionHtml += letterChoice[idx] + '</button>';
+      questionHtml += '<span class="choice">' + choice;
       questionHtml += '</span></div>';
     });
 
@@ -40,15 +40,43 @@ function renderHtml (state, element, count) {
   element.html(questionHtml);
 }
 
-// Start Quiz 
-function startQuiz() {
-  $('.start').click(function() {
-    $('.intro, .start').hide();    
-    state.currentIdx = state.quiz.length-1;
-    renderHtml(state, questionContainer, questionCount);
-  })  
 
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }
+
+function shuffleChoices () {
+  state.quiz.forEach(function (question) {
+    shuffle(question.choices);
+  });
+}
+
+
+// Start Quiz 
+function startQuiz() {  
+  $('.intro, .start').hide();
+
+  shuffle(state.quiz);  
+  shuffleChoices(); 
+  state.currentIdx = state.quiz.length-1;
+  renderHtml(state, questionContainer, questionCount);
+}
+
 
 // Check Answer
 function checkAnswer (selected, selectedBtn) {
@@ -62,15 +90,13 @@ function checkAnswer (selected, selectedBtn) {
     $('.correctAnswer').css('background-color', 'green');
   }
 
-  //state.mutableQuiz.push(state.quiz[state.currentIdx]);
-  
   $('.choices button').prop('disabled', true);
   state.mutableQuiz.push(state.quiz.pop());
-  console.log(state.mutableQuiz.length);
   
   questionCount += 1;
   $('.question-container').append('<button class="next-question">Next</button>');
 }
+
  
  // Next Question
 function nextQuestion() {
@@ -86,12 +112,17 @@ function restartQuiz () {
   state.numberCorrect = 0;
   state.quiz = state.mutableQuiz;
   state.mutableQuiz = [];
+  shuffle(state.quiz);
+  shuffleChoices(); 
+
   renderHtml(state, questionContainer, questionCount);
 }
 
 
-function main() {
-  startQuiz();
+$(document).ready(function () {
+  $('.start').click(function() {
+    startQuiz();
+  });
 
   $(document).delegate('.selectChoice', 'click', function() {
     checkAnswer($(this).next().text(), $(this));
@@ -104,8 +135,4 @@ function main() {
   $(document).delegate('.restart', 'click', function() {
     restartQuiz();
   });
-}
-
-$(document).ready(main());
-
-
+});
