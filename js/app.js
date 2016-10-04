@@ -1,7 +1,7 @@
 var questionContainer = $('.question-container');
 var questionCount = 1;
 var quizLength = state.quiz.length;
-var letterChoice = ['A', 'B', 'C', 'D'];
+
 
 function shuffle(array) {
     var currentIndex = array.length,
@@ -32,24 +32,23 @@ function shuffleChoices() {
 
 
 function renderHtml(newQuestion, element, count) {
-    var questionHtml;    
+    var questionHtml = '';
 
     $('.results').empty();
     $('.question').html(newQuestion.question);
     $('.counter').html('(' + count + ' of ' + quizLength + ')');
 
-    newQuestion.choices.forEach(function(choice, idx) {
+    newQuestion.choices.forEach(function(choice) {
         questionHtml += '<div class="choices">'
 
         if (choice === newQuestion.answer) {
-            questionHtml += '<button class="selectChoice correctAnswer">';
+            questionHtml += '<button class="select-choice correct-answer">';
         } else {
-            questionHtml += '<button class="selectChoice">';
+            questionHtml += '<button class="select-choice">';
         }
 
-        questionHtml += letterChoice[idx] + '</button>';
-        questionHtml += '<span class="choice">' + choice;
-        questionHtml += '</span></div>';
+        questionHtml += choice + '</button>';
+        questionHtml += '</div>';
     });
     questionHtml += '</div>';
     $('.next-question').hide();
@@ -59,32 +58,35 @@ function renderHtml(newQuestion, element, count) {
     //element.hide();
     element.html(questionHtml);
     SlideUpAnimate(1000, function() {
-      // SlideDownAnimate(60000, function() {
-      //   alert("TOO SLOW");
-      // });
+        // SlideDownAnimate(60000, function() {
+        //   alert("TOO SLOW");
+        // });
     });
 }
 
 
-function renderResultsHtml () {
-  var statHtml;
-  statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
-  statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
-  $('.results').html(statHtml);
-  $('.question-container').hide();
+function renderResultsHtml() {
+    var statHtml;
+    statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
+    statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart button-style">Restart</button>';
+    $('.results').html(statHtml);
+    $('.question-container').hide();
 }
 
 // Check Answer
 function checkAnswer(selected, selectedBtn) {
     if (selected === state.quiz[state.currentIdx].answer) {
+
         state.numberCorrect++;
         selectedBtn.addClass('correct');
         selectedBtn.html('<i class="fa fa-check" aria-hidden="true"></i>');
 
     } else {
+        console.log("wrong")
+        console.log(selected)
         selectedBtn.addClass('incorrect');
         selectedBtn.html('<i class="fa fa-times" aria-hidden="true"></i>');
-        $('.correctAnswer').css('border', '2px solid green');
+        $('.correct-answer').css('border', '6px solid green');
     }
 
     $('.choices button').prop('disabled', true);
@@ -92,9 +94,9 @@ function checkAnswer(selected, selectedBtn) {
 
     questionCount += 1;
     if (state.currentIdx === 0) {
-      $('.result-button').show();
+        $('.result-button').show();
     } else {
-      $('.next-question').show();
+        $('.next-question').show();
     }
     // $('.question-container').append('<button class="next-question">Next</button>');
 
@@ -109,13 +111,12 @@ function nextQuestion() {
 }
 
 // Get Question
-function getQuestion () {
+function getQuestion() {
 
-  if (state.currentIdx > -1) {
-    var ranQuestion = state.quiz[state.currentIdx];  
-    console.log(ranQuestion.question);
-    return state.quiz[state.currentIdx];  
-  } 
+    if (state.currentIdx > -1) {
+        var ranQuestion = state.quiz[state.currentIdx];
+        return state.quiz[state.currentIdx];
+    }
 }
 
 
@@ -147,8 +148,8 @@ $(document).ready(function() {
         startQuiz();
     });
 
-    $(document).delegate('.selectChoice', 'click', function() {
-        checkAnswer($(this).next().text(), $(this));
+    $(document).delegate('.select-choice', 'click', function() {
+        checkAnswer($(this).text(), $(this));
     });
 
     $(document).delegate('.next-question', 'click', function() {
@@ -161,5 +162,23 @@ $(document).ready(function() {
 
     $(document).delegate('.restart', 'click', function() {
         restartQuiz();
+    });
+
+    $(document).keydown(function(e) {
+        if (e.key === "Enter") {
+            
+            if ($('.start').is(':visible')) {
+                    startQuiz();
+            };
+
+            if ($('.next-question').is(':visible')) {
+                    nextQuestion();
+            }
+
+            if ($('.result-button').is(':visible')) {
+                    renderResultsHtml();
+            }
+
+        }
     });
 });

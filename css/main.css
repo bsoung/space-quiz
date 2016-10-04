@@ -4,20 +4,21 @@ main {
 }
 
 .intro {
-  text-align: center;
+    text-align: center;
 }
 
 .container {
-  margin: 0 auto;
-  width:100%;
-  height: 500px;
-  text-align: center;
+    margin: 0 auto;
+    height: 500px;
+    text-align: center;
+    position: relative;
+    right: 70px;
 }
 
 .answer-container {
-  width: 105px;
-  margin: 0 auto;
-  text-align: left;
+    width: 130px;
+    margin: 0 auto;
+    text-align: left;
 }
 
 body {
@@ -31,6 +32,7 @@ h2,
 h4,
 span {
     color: #fff;
+    font-family: 'Space Mono', monospace;
 }
 
 video {
@@ -46,17 +48,15 @@ video {
 }
 
 .question-container {
-  display: none;
-  padding: 15px;
-  width: 600px;
-  left: 30%;
-  background: rgba(0, 0, 0, 0.3);
-  position: absolute;
+    display: none;
+    padding: 15px;
+    width: 600px;
+    left: 30%;
+    background: rgba(0, 0, 0, 0.3);
+    /*margin-left: 303px;*/
+    position: absolute;
 }
 
-.slide-up {
-    text-align: center;
-}
 
 .choices {
     display: block;
@@ -67,22 +67,24 @@ video {
     margin-top: 20px;
 }
 
-.selectChoice {
-    overflow: hidden;
-    display: inline-block;
-    margin-top: 5px;
-    margin-right: 10px;
+.button-style {
+    border: 5px solid #34495e;
+    border-radius: 10px;
     padding: 10px;
-    background-color: #fff;
-    border-radius: 4px;
-    font-weight: bold;
+    font-family: 'Space Mono', monospace;
+    background-color: #7c74a3;
+    color: white;
 }
 
-/*.selectChoice:nth-child(1) {
+.results {
+  margin-left: 130px;
+}
+
+/*.select-choice:nth-child(1) {
   float: left;
 }
 
-.selectChoice:nth-child(3) {
+.select-choice:nth-child(3) {
  float: left;
 }*/
 
@@ -92,13 +94,30 @@ video {
 }
 
 .correct {
-    border: 3px solid green;
+    border: 6px solid green;
+}
+
+.correct-answer {
+  
 }
 
 .incorrect {
-    border: 3px solid red;
+    border: 6px solid red;
 }
 
 .next-question {
     margin-top: 30px;
+}
+
+.select-choice {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-right: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 4px;
+    font-weight: bold;
+    width: 130px;
+    max-height: 100px;
 }
