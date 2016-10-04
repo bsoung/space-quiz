@@ -1,6 +1,23 @@
 main {
+    margin: 0 auto;
     padding: 30px;
-    text-align: center;
+}
+
+.intro {
+  text-align: center;
+}
+
+.container {
+  margin: 0 auto;
+  width:100%;
+  height: 500px;
+  text-align: center;
+}
+
+.answer-container {
+  width: 105px;
+  margin: 0 auto;
+  text-align: left;
 }
 
 body {
@@ -13,7 +30,7 @@ h3,
 h2,
 h4,
 span {
-    color: #C42562;
+    color: #fff;
 }
 
 video {
@@ -29,10 +46,12 @@ video {
 }
 
 .question-container {
-    border: 1px solid black;
-    background: rgba(0, 0, 0, 0.3);
-    position: absolute;
-    margin-left: 400px;
+  display: none;
+  padding: 15px;
+  width: 600px;
+  left: 30%;
+  background: rgba(0, 0, 0, 0.3);
+  position: absolute;
 }
 
 .slide-up {

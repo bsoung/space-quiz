@@ -16,6 +16,7 @@ function renderHtml(state, element, count) {
         questionHtml += '<h4><span>(';
         questionHtml += count + ' of ' + quizLength;
         questionHtml += ')</span></h4>';
+        questionHtml += '<div class="answer-container">';
 
         state.quiz[state.currentIdx].choices.forEach(function(choice, idx) {
             questionHtml += '<div class="choices">'
@@ -30,9 +31,9 @@ function renderHtml(state, element, count) {
             questionHtml += '<span class="choice">' + choice;
             questionHtml += '</span></div>';
         });
+        questionHtml += '</div>';
 
     } else {
-        console.log(state.quiz);
         statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
         statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
         $('.results').html(statHtml);
@@ -98,7 +99,7 @@ function checkAnswer(selected, selectedBtn) {
     } else {
         selectedBtn.addClass('incorrect');
         selectedBtn.html('<i class="fa fa-times" aria-hidden="true"></i>');
-        $('.correctAnswer').css('border', '3px solid green');
+        $('.correctAnswer').css('border', '2px solid green');
     }
 
     $('.choices button').prop('disabled', true);
@@ -154,7 +155,7 @@ var SlideDownAnimate = function(duration, callback) {
 
 
 $(document).ready(function() {
-    $('.start').click(function() {
+    $('.rocket_wrap').click(function() {
         startQuiz();
     });
 
