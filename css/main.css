@@ -52,6 +52,7 @@ video {
     padding: 15px;
     width: 600px;
     left: 30%;
+    border-radius: 4%;
     background: rgba(0, 0, 0, 0.3);
     /*margin-left: 303px;*/
     position: absolute;
@@ -78,6 +79,10 @@ video {
 
 .results {
   margin-left: 130px;
+}
+
+.result-button {
+  margin-top: 10px;
 }
 
 /*.select-choice:nth-child(1) {
