@@ -3,54 +3,6 @@ var questionCount = 1;
 var quizLength = state.quiz.length;
 var letterChoice = ['A', 'B', 'C', 'D'];
 
-
-function renderHtml(newQuestion, element, count) {
-    var questionHtml;
-
-    if (state.quiz.length !== 0) {
-
-        $('.results').empty();
-        questionHtml = '<h2 class="question">';
-        questionHtml += newQuestion.question + '</h2>';
-        questionHtml += '<h4><span>(';
-        questionHtml += count + ' of ' + quizLength;
-        questionHtml += ')</span></h4>';
-        questionHtml += '<div class="answer-container">';
-
-        newQuestion.choices.forEach(function(choice, idx) {
-            questionHtml += '<div class="choices">'
-
-            if (choice === newQuestion.answer) {
-                questionHtml += '<button class="selectChoice correctAnswer">';
-            } else {
-                questionHtml += '<button class="selectChoice">';
-            }
-
-            questionHtml += letterChoice[idx] + '</button>';
-            questionHtml += '<span class="choice">' + choice;
-            questionHtml += '</span></div>';
-        });
-        questionHtml += '</div>';
-    }
-
-    //element.hide();
-    element.html(questionHtml);
-    SlideUpAnimate(1000, function() {
-      // SlideDownAnimate(60000, function() {
-      //   alert("TOO SLOW");
-      // });
-    });
-}
-
-function renderResultsHtml () {
-  var statHtml;
-  statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
-  statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
-  $('.results').html(statHtml);
-  $('.question-container').html('');
-}
-
-
 function shuffle(array) {
     var currentIndex = array.length,
         temporaryValue, randomIndex;
@@ -71,15 +23,59 @@ function shuffle(array) {
     return array;
 }
 
+
 function shuffleChoices() {
     state.quiz.forEach(function(question) {
         shuffle(question.choices);
     });
 }
 
+
+function renderHtml(newQuestion, element, count) {
+    var questionHtml;    
+
+    $('.results').empty();
+    $('.question').html(newQuestion.question);
+    $('.counter').html('(' + count + ' of ' + quizLength + ')');
+
+    newQuestion.choices.forEach(function(choice, idx) {
+        questionHtml += '<div class="choices">'
+
+        if (choice === newQuestion.answer) {
+            questionHtml += '<button class="selectChoice correctAnswer">';
+        } else {
+            questionHtml += '<button class="selectChoice">';
+        }
+
+        questionHtml += letterChoice[idx] + '</button>';
+        questionHtml += '<span class="choice">' + choice;
+        questionHtml += '</span></div>';
+    });
+    questionHtml += '</div>';
+    $('.next-question').hide();
+    $('.result-button').hide();
+
+    $('.question-container').show();
+    //element.hide();
+    element.html(questionHtml);
+    SlideUpAnimate(1000, function() {
+      // SlideDownAnimate(60000, function() {
+      //   alert("TOO SLOW");
+      // });
+    });
+}
+
+
+function renderResultsHtml () {
+  var statHtml;
+  statHtml = '<h1>Results:</h1><h3>You got ' + state.numberCorrect
+  statHtml += ' out of ' + quizLength + ' correct</h3><button class="restart">Restart</button>';
+  $('.results').html(statHtml);
+  $('.question-container').hide();
+}
+
 // Check Answer
 function checkAnswer(selected, selectedBtn) {
-
     if (selected === state.quiz[state.currentIdx].answer) {
         state.numberCorrect++;
         selectedBtn.addClass('correct');
@@ -95,30 +91,31 @@ function checkAnswer(selected, selectedBtn) {
     // state.mutableQuiz.push(state.quiz.pop());
 
     questionCount += 1;
-    $('.question-container').append('<button class="next-question">Next</button>');
+    if (state.currentIdx === 0) {
+      $('.result-button').show();
+    } else {
+      $('.next-question').show();
+    }
+    // $('.question-container').append('<button class="next-question">Next</button>');
 
 }
 
 
 // Next Question
 function nextQuestion() {
-    getQuestion();
-    renderHtml(state.quiz[state.currentIdx], questionContainer, questionCount);
+    state.currentIdx--;
+    var newQuestion = getQuestion();
+    renderHtml(newQuestion, $('.answer-container'), questionCount);
 }
 
 // Get Question
 function getQuestion () {
-  state.currentIdx = Math.floor(Math.random() * state.quiz.length);
 
-  if (state.quiz[state.currentIdx].usedFlag === false) {
-    var ranQuestion = state.quiz[state.currentIdx];
-    state.quiz[state.currentIdx].usedFlag = true;
-    state.numberUsed++;
-    return state.quiz[state.currentIdx];
-  } else {
-    console.log('END!!!!!!!!!!!!!!!');
-    renderResultsHtml();
-  }
+  if (state.currentIdx > -1) {
+    var ranQuestion = state.quiz[state.currentIdx];  
+    console.log(ranQuestion.question);
+    return state.quiz[state.currentIdx];  
+  } 
 }
 
 
@@ -129,21 +126,19 @@ function startQuiz() {
     shuffle(state.quiz);
     shuffleChoices();
 
+    state.currentIdx = state.quiz.length - 1;
     var newQuestion = getQuestion();
-    renderHtml(newQuestion, questionContainer, questionCount);
+    renderHtml(newQuestion, $('.answer-container'), questionCount);
 }
 
 
 // Restart Quiz
 function restartQuiz() {
     questionCount = 1;
-    state.currentIdx = 0;
+    state.currentIdx = state.quiz.length - 1;
     state.numberCorrect = 0;
-   
-    shuffle(state.quiz);
-    shuffleChoices();
 
-    renderHtml(state, questionContainer, questionCount);
+    startQuiz();
 }
 
 
@@ -158,6 +153,10 @@ $(document).ready(function() {
 
     $(document).delegate('.next-question', 'click', function() {
         nextQuestion();
+    });
+
+    $(document).delegate('.result-button', 'click', function() {
+        renderResultsHtml();
     });
 
     $(document).delegate('.restart', 'click', function() {
