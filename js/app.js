@@ -155,7 +155,7 @@ var SlideDownAnimate = function(duration, callback) {
 
 
 $(document).ready(function() {
-    $('.rocket_wrap').click(function() {
+    $('.start').click(function() {
         startQuiz();
     });
 
